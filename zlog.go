@@ -28,9 +28,9 @@ var loggerMap map[string]zap.Logger
 var defaultLogger zap.Logger
 
 func init() {
-	initDefaultLogger()
 	selfDir := filetool.SelfDir()
 	configPath := selfDir + "/conf/log.yml"
+	initDefaultLogger()
 	var logconfs logConfs
 	if filetool.IsExist(configPath) {
 		configBytes, err := filetool.ReadFileToBytes(configPath)
