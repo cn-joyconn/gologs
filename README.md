@@ -1,7 +1,7 @@
 ## 日志使用说明
     可以配置多个日志实体，每个实体可以指定日志输出类型、输出序列化方式。
     调用方式 
-        import (log "github.com/beego-xadmin/lib/log")
+        import (log "github.com/cn-joyconn/joyconn-gologs")
         log.Logger("myLogger").Info("我是日志")
 ## 日志配置文件说明
 配置文件位置 `` ./conf/log.yml ``
@@ -17,11 +17,11 @@ logs: #配置项根目录
     }
   }    
   - {
-    name: xadmin,
+    name: myLogger,
     adapter : file,
     formatter: '%w %t | %F:%n>> %m' ,
     conf: {
-      filename: ./logs/xadmin.log, #保存的文件名
+      filename: ./logs/myLogger.log, #保存的文件名
       maxlines: 100000 , #每个文件保存的最大行数，默认值 1000000
       maxsize: 100, #每个文件保存的最大尺寸，默认值是 1 << 28, //256 MB
       level: 1 , #日志保存的时候的级别，默认是 Trace 级别
