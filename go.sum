@@ -1,6 +1,8 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/cn-joyconn/go-joytools v0.0.0-20210107032131-3857aaec5252 h1:y/P3dXh7OIvdrJk9MxXoAPTzGzrGNQYatGz0R1whsQY=
 github.com/cn-joyconn/go-joytools v0.0.0-20210107033927-ae123d7074ef h1:YHYB2ZVzsNLdOm0hX+mNFsmlngxwPdk7OM5+uL7VMfQ=
+github.com/cn-joyconn/goutils v0.0.0-20210107134125-4839077d0228 h1:PPaJ8nKHzvmipxSu1Ijcd+U/P47vagqAisPt68nMFiE=
+github.com/cn-joyconn/goutils v0.0.0-20210107134125-4839077d0228/go.mod h1:T5WnMJtN1HtzNeE18mTb5xoI6HdUUnU+43dhE3TKUoQ=
 github.com/cn-joyconn/joyconn-goutils v0.0.0-20210107073346-827d99465fd5 h1:AnkakgDPU7Lz24H4iLAaro9V/hEbz4fut3TgaKuFNrM=
 github.com/cn-joyconn/joyconn-goutils v0.0.0-20210107073346-827d99465fd5/go.mod h1:8+5Kl9fb42TuwNYQWCQTBBll32k4+UtIkSGx8b8Yrbs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

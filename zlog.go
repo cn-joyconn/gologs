@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	filetool "github.com/cn-joyconn/joyconn-goutils/filetool"
-	filelog "github.com/cn-joyconn/joyconn-gologs/filelog"
+	filetool "github.com/cn-joyconn/goutils/filetool"
+	filelog "github.com/cn-joyconn/gologs/filelog"
 
 	zap "go.uber.org/zap"
 	zapcore "go.uber.org/zap/zapcore"

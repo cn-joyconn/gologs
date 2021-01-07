@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	strtool "github.com/cn-joyconn/joyconn-goutils/strtool"
+	strtool "github.com/cn-joyconn/goutils/strtool"
 
 	lumberjack "github.com/natefinch/lumberjack"
 	zap "go.uber.org/zap"
