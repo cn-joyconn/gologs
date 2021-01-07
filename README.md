@@ -1,7 +1,7 @@
 ## 日志使用说明
     可以配置多个日志实体，每个实体可以指定日志输出类型、输出序列化方式。
     调用方式 
-        import (log "github.com/cn-joyconn/joyconn-gologs")
+        import (log "github.com/cn-joyconn/gologs")
         log.Logger("myLogger").Info("我是日志")
 ## 日志配置文件说明
 配置文件位置 `` ./conf/log.yml ``
