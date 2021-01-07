@@ -4,6 +4,7 @@
         import (log "github.com/beego-xadmin/lib/log")
         log.Logger("myLogger").Info("我是日志")
 ## 日志配置文件说明
+配置文件位置 `` ./conf/log.yml ``
 ### 示例
 ```
 logs: #配置项根目录
