@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	filetool "github.com/cn-joyconn/goutils/filetool"
 	filelog "github.com/cn-joyconn/gologs/filelog"
+	filetool "github.com/cn-joyconn/goutils/filetool"
 
 	zap "go.uber.org/zap"
 	zapcore "go.uber.org/zap/zapcore"
@@ -28,8 +28,27 @@ var loggerMap map[string]zap.Logger
 var defaultLogger zap.Logger
 
 func init() {
-	selfDir := filetool.SelfDir()
-	configPath := selfDir + "/conf/log.yml"
+	if loggerMap == nil {
+		selfDir := filetool.SelfDir()
+		configPath := selfDir + "/conf/log.yml"
+		initLoggers(configPath)
+	}
+}
+
+//加载日志配置
+func LoadConfig(configPath string) {
+	if strings.HasPrefix(configPath, "./") {
+		configPath = filetool.SelfDir() + configPath[1:]
+	}
+	for {
+		if !strings.Contains(configPath, "//") {
+			break
+		}
+		configPath = strings.ReplaceAll(configPath, "//", "/")
+	}
+	initLoggers(configPath)
+}
+func initLoggers(configPath string) {
 	initDefaultLogger()
 	var logconfs logConfs
 	if filetool.IsExist(configPath) {
@@ -47,17 +66,18 @@ func init() {
 		defaultLogger.Error("未找到log.yml")
 		return
 	}
-	loggerMap = make(map[string]zap.Logger)
+	_loggerMap := make(map[string]zap.Logger)
 	var logconf logConf
 
 	for i := 0; i < len(logconfs.Logs); i++ {
 		logconf = logconfs.Logs[i]
 		logger, err := newLogger(&logconf)
 		if err == nil {
-			loggerMap[logconf.Name] = *logger
+			_loggerMap[logconf.Name] = *logger
 		}
 
 	}
+	loggerMap = _loggerMap
 }
 
 //GetLogger 获取一个Logger
@@ -88,7 +108,7 @@ func newLogger(lc *logConf) (*zap.Logger, error) {
 				logger, lerr := filelog.NewFileLogger(string(enc))
 				if lerr != nil {
 					return nil, lerr
-				} 
+				}
 				zloger = logger
 			} else {
 				return nil, err
