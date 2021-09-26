@@ -13,7 +13,6 @@ logs:
     formatter: '%w %t | %F:%n>> %m' ,
     conf: {
       filename: ./logs/xadmin.log, #保存的文件名
-      maxlines: 100000 , #每个文件保存的最大行数，默认值 1000000
       maxsize: 100, #文件大小限制,单位MB
       maxbackups: 10 , #最大保留日志文件数量
       level : debug , #日志保存的时候的级别，默认是 debug 级别
@@ -26,7 +25,6 @@ logs:
     formatter: '%w %t | %F:%n>> %m' ,
     conf: {
       filename: ./logs/xadmin2.log, #保存的文件名
-      maxlines: 100000 , #每个文件保存的最大行数，默认值 1000000
       maxsize: 100, #文件大小限制,单位MB
       maxbackups: 10 , #最大保留日志文件数量
       level : debug , #日志保存的时候的级别，默认是 debug 级别

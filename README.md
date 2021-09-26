@@ -22,7 +22,6 @@ logs: #配置项根目录
     formatter: '%w %t | %F:%n>> %m' ,
     conf: {
       filename: ./logs/myLogger.log, #保存的文件名
-      maxlines: 100000 , #每个文件保存的最大行数，默认值 1000000
       maxsize: 100, #每个文件保存的最大尺寸，默认值是 1 << 28, //256 MB
       level: 1 , #日志保存的时候的级别，默认是 Trace 级别
       compress: false #压缩存储
@@ -64,7 +63,6 @@ Adapter = console
 输出到文件
 Adapter = file
 #     - filename 保存的文件名
-#     - maxlines 每个文件保存的最大行数，默认值 1000000
 #     - maxsize 每个文件保存的最大尺寸，默认值是 1 << 28, //256 MB
 #     - daily 是否按照每天 logrotate，默认是 true
 #     - maxdays 文件最多保存多少天，默认保存 7 天
@@ -75,7 +73,6 @@ Adapter = file
 输出到文件(需要单独写入文件的日志级别)
 Adapter = multifile
 #     - filename 保存的文件名
-#     - maxlines 每个文件保存的最大行数，默认值 1000000
 #     - maxsize 每个文件保存的最大尺寸，默认值是 1 << 28, //256 MB
 #     - daily 是否按照每天 logrotate，默认是 true
 #     - maxdays 文件最多保存多少天，默认保存 7 天
