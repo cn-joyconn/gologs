@@ -24,8 +24,8 @@ type logConfs struct {
 	Logs []logConf
 }
 
-var loggerMap map[string]zap.Logger
-var defaultLogger zap.Logger
+var loggerMap map[string]*zap.Logger
+var defaultLogger *zap.Logger
 
 func init() {
 	if loggerMap == nil {
@@ -49,7 +49,7 @@ func LoadConfig(configPath string) {
 	initLoggers(configPath)
 }
 func initLoggers(configPath string) {
-	initDefaultLogger()
+
 	var logconfs logConfs
 	if filetool.IsExist(configPath) {
 		configBytes, err := filetool.ReadFileToBytes(configPath)
@@ -66,16 +66,23 @@ func initLoggers(configPath string) {
 		defaultLogger.Error("未找到log.yml")
 		return
 	}
-	_loggerMap := make(map[string]zap.Logger)
+	_loggerMap := make(map[string]*zap.Logger)
 	var logconf logConf
-
+	initDefalutLoggered := false
 	for i := 0; i < len(logconfs.Logs); i++ {
 		logconf = logconfs.Logs[i]
 		logger, err := newLogger(&logconf)
 		if err == nil {
-			_loggerMap[logconf.Name] = *logger
+			_loggerMap[logconf.Name] = logger
+		}
+		if logconf.Name == "default" {
+			initDefalutLoggered = true
+			defaultLogger = logger
 		}
 
+	}
+	if !initDefalutLoggered {
+		initDefaultLogger()
 	}
 	loggerMap = _loggerMap
 }
@@ -84,19 +91,22 @@ func initLoggers(configPath string) {
 func GetLogger(name string) *zap.Logger {
 	logger, ok := loggerMap[name]
 	if ok {
-		return &logger
+		return logger
 	}
-	return &defaultLogger
+	return defaultLogger
 }
-
 func initDefaultLogger() {
+	defaultLogger = creatConsoleLogger(zapcore.DebugLevel)
+}
+func creatConsoleLogger(level zapcore.Level) *zap.Logger {
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 
-	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), os.Stdout, zapcore.DebugLevel)
+	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), os.Stdout, level)
 
-	defaultLogger = *zap.New(core, zap.AddCaller())
+	resultLogger := *zap.New(core, zap.AddCaller())
+	return &resultLogger
 	// defaultLogger.
 }
 func newLogger(lc *logConf) (*zap.Logger, error) {
@@ -115,7 +125,34 @@ func newLogger(lc *logConf) (*zap.Logger, error) {
 			}
 		}
 	} else if strings.ToLower(lc.Adapter) == "console" {
-		zloger = &defaultLogger
+		level := zapcore.DebugLevel
+		_level, ok := lc.Conf["level"]
+		if !ok {
+			level = zapcore.DebugLevel
+		} else {
+			switch _level.(type) {
+			case int:
+				level = _level.(zapcore.Level)
+			case string:
+				switch strings.ToLower(_level.(string)) {
+				case "debug":
+					level = zapcore.DebugLevel
+				case "info":
+					level = zapcore.InfoLevel
+				case "error":
+					level = zapcore.ErrorLevel
+				case "warn":
+					level = zapcore.WarnLevel
+				case "fetal":
+					level = zapcore.FatalLevel
+				case "dpanic":
+					level = zapcore.DPanicLevel
+				case "panic":
+					level = zapcore.FatalLevel
+				}
+			}
+		}
+		zloger = creatConsoleLogger(level)
 	}
 
 	return zloger, nil
