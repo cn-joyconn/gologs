@@ -2,6 +2,7 @@ package log
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
 
@@ -54,16 +55,19 @@ func initLoggers(configPath string) {
 	if filetool.IsExist(configPath) {
 		configBytes, err := filetool.ReadFileToBytes(configPath)
 		if err != nil {
-			defaultLogger.Error(err.Error())
+			fmt.Println(err.Error())
+			// defaultLogger.Error(err.Error())
 			return
 		}
 		err = yaml.Unmarshal(configBytes, &logconfs)
 		if err != nil {
-			defaultLogger.Error("解析log.yml文件失败")
+			fmt.Println("解析log.yml文件失败")
+			// defaultLogger.Error("解析log.yml文件失败")
 			return
 		}
 	} else {
-		defaultLogger.Error("未找到log.yml")
+		fmt.Println("未找到log.yml")
+		// defaultLogger.Error("未找到log.yml")
 		return
 	}
 	_loggerMap := make(map[string]*zap.Logger)
