@@ -50,7 +50,7 @@ func LoadConfig(configPath string) {
 	initLoggers(configPath)
 }
 func initLoggers(configPath string) {
-
+	initDefaultLogger()
 	var logconfs logConfs
 	if filetool.IsExist(configPath) {
 		configBytes, err := filetool.ReadFileToBytes(configPath)
@@ -72,7 +72,6 @@ func initLoggers(configPath string) {
 	}
 	_loggerMap := make(map[string]*zap.Logger)
 	var logconf logConf
-	initDefalutLoggered := false
 	for i := 0; i < len(logconfs.Logs); i++ {
 		logconf = logconfs.Logs[i]
 		logger, err := newLogger(&logconf)
@@ -80,14 +79,11 @@ func initLoggers(configPath string) {
 			_loggerMap[logconf.Name] = logger
 		}
 		if logconf.Name == "default" {
-			initDefalutLoggered = true
 			defaultLogger = logger
 		}
 
 	}
-	if !initDefalutLoggered {
-		initDefaultLogger()
-	}
+
 	loggerMap = _loggerMap
 }
 
