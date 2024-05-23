@@ -3,7 +3,10 @@ package filelog
 import (
 	"encoding/json"
 	"errors"
+	"path"
+	"strings"
 
+	"github.com/cn-joyconn/goutils/filetool"
 	strtool "github.com/cn-joyconn/goutils/strtool"
 
 	lumberjack "github.com/natefinch/lumberjack"
@@ -14,14 +17,14 @@ import (
 type fileLogConf struct {
 	Filename   string `json:"filename" yaml:"filename"`
 	Level      string `json:"level" yaml:"level"`
-	Maxsize    int    `json:"maxsize" yaml:"maxsize"`    //文件大小限制,单位MB
+	Maxsize    int    `json:"maxsize" yaml:"maxsize"`       //文件大小限制,单位MB
 	Maxbackups int    `json:"maxbackups" yaml:"maxbackups"` //最大保留日志文件数量
-	Maxage     int    `json:"maxage" yaml:"maxage"`     //日志文件保留天数
-	Compress   bool   `json:"compress" yaml:"compress"`  //是否压缩处理
-	LocalTime  bool `json:"localtime" yaml:"localtime"`
+	Maxage     int    `json:"maxage" yaml:"maxage"`         //日志文件保留天数
+	Compress   bool   `json:"compress" yaml:"compress"`     //是否压缩处理
+	LocalTime  bool   `json:"localtime" yaml:"localtime"`
 }
 
-//NewFileLogger 获取file Logger
+// NewFileLogger 获取file Logger
 // filename:         //日志文件存放目录
 // maxsize:          //文件大小限制,单位MB
 // maxbackups:       //最大保留日志文件数量
@@ -42,8 +45,13 @@ func NewFileLogger(conf string) (*zap.Logger, error) {
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	// ext := path.Ext(filename)
 	// filename = filename[0:len(filename)-len(ext)]
+	Filename := flc.Filename
+	selfDir := filetool.SelfDir()
+	if strings.HasPrefix(flc.Filename, "./") || strings.HasPrefix(flc.Filename, ".\\") {
+		Filename = path.Join(selfDir, flc.Filename[2:])
+	}
 	infoFileWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
-		Filename:   flc.Filename,   //日志文件存放目录，如果文件夹不存在会自动创建
+		Filename:   Filename,       //日志文件存放目录，如果文件夹不存在会自动创建
 		MaxSize:    flc.Maxsize,    //文件大小限制,单位MB
 		MaxBackups: flc.Maxbackups, //最大保留日志文件数量
 		MaxAge:     flc.Maxage,     //日志文件保留天数
