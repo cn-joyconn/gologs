@@ -48,7 +48,7 @@ func NewFileLogger(conf string) (*zap.Logger, error) {
 	Filename := flc.Filename
 	selfDir := filetool.SelfDir()
 	if strings.HasPrefix(flc.Filename, "./") || strings.HasPrefix(flc.Filename, ".\\") {
-		Filename = path.Join(selfDir, flc.Filename[2:])
+		Filename = path.Join(selfDir, flc.Filename[1:])
 	}
 	infoFileWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   Filename,       //日志文件存放目录，如果文件夹不存在会自动创建
