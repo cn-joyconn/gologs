@@ -9,7 +9,7 @@ import (
 	"github.com/cn-joyconn/goutils/filetool"
 	strtool "github.com/cn-joyconn/goutils/strtool"
 
-	lumberjack "github.com/natefinch/lumberjack"
+	lumberjack "gopkg.in/natefinch/lumberjack.v2"
 	zap "go.uber.org/zap"
 	zapcore "go.uber.org/zap/zapcore"
 )
